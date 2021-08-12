@@ -2,7 +2,7 @@
 class Sudoku:
   # Constructor
   def __init__(self, matrix):
-      self.board = self.load(matrix)
+    self.board = self.load(matrix)
 
   # Load board with matrix
   def load(self, matrix):
@@ -58,57 +58,69 @@ class Sudoku:
 
     return True
 
-  # Check board completion
-  def isSolved(self):
-    rs = self.isRowSolved()
-    cs = self.isColumnSolved()
-    ss = self.isSquareSolved()
+  # Check board validity
+  def isValid(self):
+    rv = self.isRowValid()
+    cv = self.isColumnValid()
+    sv = self.isSquareValid()
 
-    if rs and cs and ss:
+    if rv and cv and sv:
       return True
     
     return False
 
-  # Check row completion
-  def isRowSolved(self):
+  # Check board completion
+  def isSolved(self):
+    if not self.isValid():
+      return False
+
+    for k in range(81):
+      if self.board[k] == 0:
+        return False
+
+    return True
+
+
+  # Check row validity
+  def isRowValid(self):
     for j in range(9):
       row = []
       for i in range(9):
         row.append(self.board[j * 9 + i])
 
       for v in range(1, 10):
-        if row.count(v) != 1:
+        if row.count(v) > 1:
           return False
 
     return True
 
-  # Check column completion
-  def isColumnSolved(self):
+  # Check column validity
+  def isColumnValid(self):
     for i in range(9):
       col = []
       for j in range(9):
         col.append(self.board[j * 9 + i])
 
       for v in range(1, 10):
-        if col.count(v) != 1:
+        if col.count(v) > 1:
           return False
 
     return True
 
-  # Check square completion
-  def isSquareSolved(self):
+  # Check square validity
+  def isSquareValid(self):
     for c in range(9):
       sq = []
       for k in range(9):
         sq.append(self.board[((c // 3) * 3 + (k // 3)) * 9 + ((c % 3) * 3 + (k % 3))])
 
       for v in range(1, 10):
-        if sq.count(v) != 1:
+        if sq.count(v) > 1:
           return False
 
     return True
 
-# Sudoku class testing
+# Testing
 if __name__ == '__main__':
   sample = [
     1, 4, 5, 6, 2, 7, 8, 9, 3,
